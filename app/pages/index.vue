@@ -154,7 +154,7 @@ const settings = reactive({
     waveType: 'uniquewave' as 'equalizer' | 'uniquewave'
 })
 
-const appVersion = '2.0.0'
+const appVersion = '1.0.0'
 
 // Computed - audioIntensity from Web Audio Player
 const audioIntensity = ref(0)

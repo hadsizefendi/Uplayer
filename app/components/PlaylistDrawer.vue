@@ -774,8 +774,9 @@ function handleAddFilesClick() {
     }
 }
 
-// Lazy initialize scrollbar only when expanded
+// Scrollbar state
 let scrollbarInitialized = false;
+let updatePathFn: (() => void) | null = null;
 
 // Initialize curved scrollbar for playlist
 function initCurvedScrollbar(container: HTMLElement) {
@@ -814,6 +815,10 @@ function initCurvedScrollbar(container: HTMLElement) {
     function updatePath() {
         const w = container.clientWidth;
         const h = container.clientHeight;
+        
+        // Skip update if container has no size (collapsed)
+        if (w === 0 || h === 0) return;
+        
         const r = parseFloat(getComputedStyle(container).borderRadius) || 0;
 
         const effectiveRadius = Math.max(r - OFFSET, 0);
@@ -836,11 +841,18 @@ function initCurvedScrollbar(container: HTMLElement) {
 
         updateThumb();
     }
+    
+    // Expose updatePath for external calls
+    updatePathFn = updatePath;
 
     function updateThumb() {
         if (rafId) return;
         rafId = requestAnimationFrame(() => {
             rafId = null;
+            
+            // Skip if no valid path
+            if (pathLength === 0) return;
+            
             const scrollableHeight = content.scrollHeight - content.clientHeight || 1;
             const scrollRatio = content.scrollTop / scrollableHeight;
             const startOffset = (pathLength - thumbLength) * scrollRatio;
@@ -891,17 +903,43 @@ function initCurvedScrollbar(container: HTMLElement) {
     updatePath();
 }
 
+// Watch expanded state to recalculate scrollbar
+watch(() => props.expanded, (expanded) => {
+    if (expanded && playlistScrollContainer.value) {
+        // Wait for CSS transition to complete before recalculating
+        setTimeout(() => {
+            if (updatePathFn) {
+                updatePathFn();
+            }
+        }, 300); // Match the CSS transition duration
+    }
+});
+
+// Also watch songs array changes to update scrollbar thumb size
+watch(() => props.songs.length, () => {
+    if (props.expanded && updatePathFn) {
+        nextTick(() => {
+            setTimeout(() => updatePathFn?.(), 50);
+        });
+    }
+});
+
 onMounted(() => {
     if (playlistScrollContainer.value) {
-        requestIdleCallback?.(() => {
-            if (playlistScrollContainer.value) {
-                initCurvedScrollbar(playlistScrollContainer.value);
-            }
-        }) || setTimeout(() => {
-            if (playlistScrollContainer.value) {
-                initCurvedScrollbar(playlistScrollContainer.value);
-            }
-        }, 200);
+        // Initialize immediately if expanded, otherwise wait
+        if (props.expanded) {
+            initCurvedScrollbar(playlistScrollContainer.value);
+        } else {
+            // Defer initialization until first expansion
+            const unwatch = watch(() => props.expanded, (expanded) => {
+                if (expanded && playlistScrollContainer.value) {
+                    initCurvedScrollbar(playlistScrollContainer.value);
+                    // Wait for expansion animation then update
+                    setTimeout(() => updatePathFn?.(), 300);
+                    unwatch();
+                }
+            });
+        }
     }
 });
 </script>

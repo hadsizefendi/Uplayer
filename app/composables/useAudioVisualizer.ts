@@ -273,15 +273,15 @@ export class uniquewave {
 
         // Draw multiple layers with frequency-based opacity only
         // Background layers (subtle)
-        this._drawLine(-2, `rgba(168, 85, 247, ${0.04 + this.lowFreq * 0.04})`, 3);
-        this._drawLine(-6, `rgba(6, 182, 212, ${0.08 + this.midFreq * 0.08})`, 6);
+        this._drawLine(-2, `rgba(168, 85, 247, ${0.04 + this.lowFreq * 0.04})`, 1.5);
+        this._drawLine(-6, `rgba(6, 182, 212, ${0.08 + this.midFreq * 0.08})`, 3);
         
         // Mid layers (more visible)
-        this._drawLine(4, `rgba(236, 72, 153, ${0.15 + this.highFreq * 0.2})`, 9);
-        this._drawLine(2, `rgba(139, 92, 246, ${0.35 + this.midFreq * 0.2})`, 6);
+        this._drawLine(4, `rgba(236, 72, 153, ${0.15 + this.highFreq * 0.2})`, 4.5);
+        this._drawLine(2, `rgba(139, 92, 246, ${0.35 + this.midFreq * 0.2})`, 3);
         
         // Main line (most visible)
-        this._drawLine(1, `rgba(6, 182, 212, ${0.7 + this.amplitude * 0.3})`, 3);
+        this._drawLine(1, `rgba(6, 182, 212, ${0.7 + this.amplitude * 0.3})`, 1.5);
 
         this.animFrameId = requestAnimationFrame(this._draw.bind(this));
     }
