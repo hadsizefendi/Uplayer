@@ -1,0 +1,28 @@
+[package]
+name = "uplayer"
+version = "1.0.0"
+description = "Modern masaüstü müzik çalar"
+authors = ["Uplayer"]
+edition = "2021"
+
+[lib]
+name = "uplayer_lib"
+crate-type = ["lib", "cdylib", "staticlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["protocol-asset"] }
+tauri-plugin-shell = "2"
+tauri-plugin-dialog = "2"
+tauri-plugin-fs = "2"
+tauri-plugin-store = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+id3 = "1"
+lofty = "0.21"
+walkdir = "2"
+base64 = "0.22"
+tauri-plugin-drag = "2.1.0"
+tauri-plugin-single-instance = "2.3.6"

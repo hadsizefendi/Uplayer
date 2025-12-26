@@ -1,0 +1,140 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Uplayer",
+  "version": "1.0.0",
+  "identifier": "com.uplayer.app",
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "devUrl": "http://localhost:3000",
+    "beforeBuildCommand": "pnpm generate",
+    "frontendDist": "../.output/public"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "title": "Uplayer",
+        "width": 640,
+        "height": 640,
+        "minWidth": 480,
+        "minHeight": 480,
+        "resizable": true,
+        "fullscreen": false,
+        "decorations": false,
+        "transparent": true,
+        "center": true,
+        "shadow": true,
+        "theme": "Dark",
+        "incognito": false,
+        "dragDropEnabled": true
+      }
+    ],
+    "security": {
+      "csp": null,
+      "assetProtocol": {
+        "enable": true,
+        "scope": [
+          "$HOME/**",
+          "$AUDIO/**",
+          "$MUSIC/**",
+          "$DOCUMENT/**",
+          "$DOWNLOAD/**",
+          "$DESKTOP/**",
+          "$VIDEO/**",
+          "/**"
+        ]
+      }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["rpm", "deb", "nsis", "msi", "dmg", "app"],
+    "windows": {
+      "nsis": {
+        "installerIcon": "icons/icon.ico",
+        "headerImage": null,
+        "sidebarImage": null,
+        "installMode": "currentUser",
+        "languages": ["English", "Turkish"],
+        "displayLanguageSelector": true
+      }
+    },
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.png",
+      "icons/icon.ico"
+    ],
+    "fileAssociations": [
+      {
+        "ext": ["mp3"],
+        "mimeType": "audio/mpeg",
+        "description": "MP3 Audio File",
+        "name": "MP3 Audio"
+      },
+      {
+        "ext": ["wav"],
+        "mimeType": "audio/wav",
+        "description": "WAV Audio File",
+        "name": "WAV Audio"
+      },
+      {
+        "ext": ["flac"],
+        "mimeType": "audio/flac",
+        "description": "FLAC Audio File",
+        "name": "FLAC Audio"
+      },
+      {
+        "ext": ["ogg", "oga"],
+        "mimeType": "audio/ogg",
+        "description": "OGG Audio File",
+        "name": "OGG Audio"
+      },
+      {
+        "ext": ["m4a"],
+        "mimeType": "audio/mp4",
+        "description": "M4A Audio File",
+        "name": "M4A Audio"
+      },
+      {
+        "ext": ["aac"],
+        "mimeType": "audio/aac",
+        "description": "AAC Audio File",
+        "name": "AAC Audio"
+      },
+      {
+        "ext": ["opus"],
+        "mimeType": "audio/opus",
+        "description": "Opus Audio File",
+        "name": "Opus Audio"
+      },
+      {
+        "ext": ["webm"],
+        "mimeType": "audio/webm",
+        "description": "WebM Audio File",
+        "name": "WebM Audio"
+      }
+    ],
+    "linux": {
+      "deb": {
+        "depends": ["libasound2"],
+        "desktopTemplate": "uplayer.desktop.template"
+      },
+      "rpm": {
+        "desktopTemplate": "uplayer.desktop.template"
+      },
+      "appimage": {
+        "bundleMediaFramework": false
+      }
+    },
+    "category": "Music",
+    "shortDescription": "Modern desktop music player",
+    "longDescription": "Uplayer is a modern, elegant music player with lyrics support, audio visualization, and playlist management."
+  },
+  "plugins": {
+    "shell": {
+      "open": true
+    }
+  }
+}
